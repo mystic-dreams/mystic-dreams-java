@@ -2,21 +2,23 @@ package main.services;
 
 import main.Config;
 import main.agents.Character;
+import main.agents.JobClass;
 import main.exceptions.CharacterNotFoundException;
 import main.exceptions.DataCorruptedException;
+import main.exceptions.InvalidJobException;
 import main.services.filefilters.CharacterFileFilter;
+import main.stats.Stats;
 import main.ui.Logger;
 import main.ui.UI;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
+import static java.lang.Integer.parseInt;
+import static java.lang.Thread.sleep;
 import static main.ui.UI.newline;
 
 public class FileServices {
@@ -49,28 +51,52 @@ public class FileServices {
 
     public static void writeCharacterToFile(Character character) throws IOException, InterruptedException {
         Logger.info("Creating character");
-        String characterDataFilePath = getCharacterDataFilePath(character.getName());
+        String characterDataFilePath = getCharacterDataFilePath(character.name);
         Logger.debug("Writing to " + characterDataFilePath);
-        try (FileWriter fw = new FileWriter(characterDataFilePath)) {
-            fw.write("name=" + character.getName());
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(characterDataFilePath))) {
+            writer.write(character.toFileFormat());
         }
 
         File characterFile = new File(characterDataFilePath);
         while (!characterFile.exists()) { // Wait for the file to be created.
-            Thread.sleep(1000);
+            sleep(1000);
             UI.print(".");
         }
         newline();
         Logger.info("Character created");
     }
 
-    public static Character loadCharacter(String characterName) throws CharacterNotFoundException, DataCorruptedException {
-        String characterDataFilePath = Config.DATA_FOLDER_PATH + "/" + characterName + Config.CHARACTER_DATA_FILE_EXTENSION;
+    public static Character loadCharacter(String characterName) throws CharacterNotFoundException,
+            DataCorruptedException, InvalidJobException, InterruptedException {
+        String characterDataFilePath =
+                Config.DATA_FOLDER_PATH + "/" + characterName + Config.CHARACTER_DATA_FILE_EXTENSION;
         try {
             Map<String, String> characterData = parseFile(characterDataFilePath);
-            return new Character(characterData.get("name"));
+            Stats stats = new Stats(
+                    parseInt(characterData.get("str")),
+                    parseInt(characterData.get("wis")),
+                    parseInt(characterData.get("maxHP")),
+                    parseInt(characterData.get("maxMP")),
+                    parseInt(characterData.get("avd")),
+                    parseInt(characterData.get("acc")),
+                    parseInt(characterData.get("spd")),
+                    parseInt(characterData.get("wAtt")),
+                    parseInt(characterData.get("mAtt")),
+                    parseInt(characterData.get("wMast"))
+            );
+            return new Character(
+                    characterData.get("name"),
+                    parseInt(characterData.get("level")),
+                    parseInt(characterData.get("hp")),
+                    parseInt(characterData.get("mp")),
+                    stats,
+                    JobClass.parse(characterData.get("job")),
+                    parseInt(characterData.get("ap")),
+                    parseInt(characterData.get("sp")));
         } catch (FileNotFoundException e) {
             throw new CharacterNotFoundException(characterName);
+        } catch (NumberFormatException e) {
+            throw new DataCorruptedException(characterDataFilePath);
         }
     }
 

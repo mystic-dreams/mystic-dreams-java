@@ -3,7 +3,7 @@ package main;
 import main.ui.LogLevel;
 
 public class Config {
-    public static final LogLevel LOG_LEVEL = LogLevel.DEBUG;
+    public static final LogLevel LOG_LEVEL = LogLevel.INFO;
     public static final int DISPLAY_THROTTLE = 200; // In milliseconds
     public static final int NOTICE_DISPLAY_DELAY = 2 * DISPLAY_THROTTLE;
 

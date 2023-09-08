@@ -3,6 +3,7 @@ package main.ui.menus;
 import main.exceptions.InvalidOptionException;
 import main.utility.OptionsBuilder;
 
+import static main.Messages.INVALID_SELECTION;
 import static main.ui.UI.*;
 
 public abstract class Menu {
@@ -39,7 +40,7 @@ public abstract class Menu {
                 handleSelection(selection);
 
             } catch (NumberFormatException | InvalidOptionException e) {
-                notice("Invalid Input");
+                notice(INVALID_SELECTION);
             } finally {
                 newline();
             }

@@ -3,14 +3,17 @@ package main.ui.menus;
 import main.agents.Character;
 import main.exceptions.CharacterNotFoundException;
 import main.exceptions.DataCorruptedException;
+import main.exceptions.InvalidJobException;
 import main.exceptions.InvalidOptionException;
 import main.services.FileServices;
 import main.ui.Logger;
 import main.ui.screens.CharacterCreationScreen;
+import main.ui.screens.CharacterStatsScreen;
 import main.utility.OptionsBuilder;
 
 import java.io.IOException;
 
+import static main.Messages.INVALID_SELECTION;
 import static main.ui.UI.*;
 
 public class CharacterSelectionMenu extends Menu {
@@ -45,11 +48,11 @@ public class CharacterSelectionMenu extends Menu {
 
                 handleSelection(selection);
 
-            } catch (NumberFormatException | InvalidOptionException e) {
-                notice("Invalid Input");
             } catch (IOException e) {
                 Logger.error("Unable to get characters.");
                 return;
+            } catch (InvalidOptionException e) {
+                notice(INVALID_SELECTION);
             } finally {
                 newline();
             }
@@ -63,8 +66,8 @@ public class CharacterSelectionMenu extends Menu {
         } else {
             try {
                 Character character = FileServices.loadCharacter(options[selection - 1]);
-                Logger.debug(character.toString());
-            } catch (DataCorruptedException | CharacterNotFoundException e) {
+                new CharacterStatsScreen(character).show();
+            } catch (DataCorruptedException | CharacterNotFoundException | InvalidJobException e) {
                 Logger.error(e.getMessage());
             }
         }
