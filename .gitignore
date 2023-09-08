@@ -3,6 +3,7 @@
 out/
 !**/src/main/**/out/
 !**/src/test/**/out/
+data/
 
 ### Mac OS ###
 .DS_Store
