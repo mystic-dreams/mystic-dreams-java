@@ -1,9 +1,9 @@
 package main.skills;
 
-import main.agents.Character;
+import main.agents.Agent;
 
 public interface SupportSkill {
-    void apply(Character character);
+    void apply(Agent character);
 
-    void unapply(Character character); // For leveling up and buffs
+    void unapply(Agent character); // For leveling up and buffs
 }

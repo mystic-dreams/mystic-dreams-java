@@ -1,6 +1,6 @@
 package main.skills.passive;
 
-import main.agents.Character;
+import main.agents.Agent;
 import main.skills.Skill;
 import main.skills.SupportSkill;
 import main.stats.Stats;
@@ -14,12 +14,12 @@ public abstract class PassiveSkill extends Skill implements SupportSkill {
     }
 
     @Override
-    public void apply(Character character) {
-        character.stats = character.stats.add(effects[level]);
+    public void apply(Agent agent) {
+        agent.stats = agent.stats.add(effects[level]);
     }
 
     @Override
-    public void unapply(Character character) {
-        character.stats = character.stats.remove(effects[level]);
+    public void unapply(Agent agent) {
+        agent.stats = agent.stats.remove(effects[level]);
     }
 }

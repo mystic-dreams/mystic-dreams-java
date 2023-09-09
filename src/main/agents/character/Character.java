@@ -1,9 +1,9 @@
-package main.agents;
+package main.agents.character;
 
+import main.agents.Agent;
 import main.exceptions.LevelExceededException;
 import main.services.Savable;
 import main.skills.Skill;
-import main.skills.SupportSkill;
 import main.skills.passive.PassiveSkill;
 import main.skills.skillbooks.MagicianSkillBook;
 import main.skills.skillbooks.SkillBook;
@@ -22,36 +22,21 @@ import static main.stats.DefaultStats.WARRIOR_STARTER_STATS;
 import static main.ui.UI.notice;
 import static main.ui.UI.println;
 
-public class Character implements Savable {
-    public final String name;
-    public int level;
-
+public class Character extends Agent implements Savable {
     public final JobClass job;
 
-    private int hp;
-    private int mp;
     private int ap; // Attribute points
     private int sp; // Skill points
 
-    private int exp;
 
-    public Stats stats;
-
-    public SkillBook skillBook;
-
-    public Character(String name, int level, int hp, int mp, Stats stats, JobClass job, SkillBook skillbook, int ap,
-                     int sp,
-                     int exp) throws InterruptedException {
-        this.name = name;
-        this.level = level;
-        this.stats = stats;
+    public Character(String name, int level, int hp, int mp, Stats stats, JobClass job, SkillBook skillBook, int ap,
+                     int sp, int exp) {
+        super(name, hp, mp, level, exp, stats, skillBook);
         this.job = job;
         this.ap = ap;
         this.sp = sp;
-        this.exp = exp;
 
-        this.skillBook = skillbook;
-        for (Skill skill : this.skillBook.getPassiveSkills()) {
+        for (PassiveSkill skill : this.skillBook.getPassiveSkills()) {
             useSkill(skill);
         }
 
@@ -59,42 +44,21 @@ public class Character implements Savable {
         this.mp = mp == 0 ? this.stats.maxMP.getValue() : Math.min(mp, this.stats.maxMP.getValue());
     }
 
-    public Character(String name, JobClass job) throws InterruptedException {
+    public Character(String name, JobClass job) {
         this(name, 1, 0, 0, getStarterStats(job), job, getBasicSkillBook(job), 0, 0, 0);
     }
 
     // ========================================
     //  Stats
     // ========================================
-
-    public int getHP() {
-        return hp;
+    private static Stats getStarterStats(JobClass job) {
+        return job == JobClass.WARRIOR ? WARRIOR_STARTER_STATS : MAGICIAN_STARTER_STATS;
     }
 
-    public int getMP() {
-        return mp;
-    }
-
-    public void recover() {
-        regenerate();
-        rejuvenate();
-    }
-
-    public void regenerate() {
-        this.hp = stats.maxHP.getValue();
-    }
-
-    public void rejuvenate() {
-        this.mp = stats.maxMP.getValue();
-    }
 
     // ========================================
     //  Skills
     // ========================================
-
-    public void useSkill(String skillName) {
-        useSkill(skillBook.getSkill(skillName));
-    }
 
     public void levelSkill(String skillName, int levels) throws InterruptedException {
 
@@ -120,6 +84,10 @@ public class Character implements Savable {
         }
     }
 
+    private static SkillBook getBasicSkillBook(JobClass job) {
+        return job == JobClass.WARRIOR ? WarriorSkillBook.init() : MagicianSkillBook.init();
+    }
+
     // ========================================
     //  EXP and Level
     // ========================================
@@ -131,6 +99,19 @@ public class Character implements Savable {
             levelUp();
         }
         writeCharacterToFile(this);
+    }
+
+    private void levelUp() throws InterruptedException {
+        level += 1;
+        Stats upgradeStats = new StatsBuilder()
+                .setMaxHP(getHPIncrementOnLevel(stats.str.getBaseValue(), stats.maxHP.getBaseValue()), StatType.BASE)
+                .setMaxMP(getMPIncrementOnLevel(stats.wis.getBaseValue(), stats.maxMP.getBaseValue()), StatType.BASE)
+                .build();
+        this.stats = this.stats.add(upgradeStats);
+        recover();
+        ap += AP_PER_LEVEL;
+        sp += SP_PER_LEVEL;
+        notice("LEVEL UP!");
     }
 
     // ========================================
@@ -147,32 +128,5 @@ public class Character implements Savable {
                 + AP_FIELD + "=" + ap + "\n"
                 + SP_FIELD + "=" + sp + "\n"
                 + EXP_FIELD + "=" + exp + "\n";
-    }
-
-    private static Stats getStarterStats(JobClass job) {
-        return job == JobClass.WARRIOR ? WARRIOR_STARTER_STATS : MAGICIAN_STARTER_STATS;
-    }
-
-    private static SkillBook getBasicSkillBook(JobClass job) {
-        return job == JobClass.WARRIOR ? WarriorSkillBook.init() : MagicianSkillBook.init();
-    }
-
-    private void useSkill(Skill skill) {
-        if (skill instanceof SupportSkill) {
-            ((SupportSkill) skill).apply(this);
-        }
-    }
-
-    private void levelUp() throws InterruptedException {
-        level += 1;
-        Stats upgradeStats = new StatsBuilder()
-                .setMaxHP(getHPIncrementOnLevel(stats.str.getBaseValue(), stats.maxHP.getBaseValue()), StatType.BASE)
-                .setMaxMP(getMPIncrementOnLevel(stats.wis.getBaseValue(), stats.maxMP.getBaseValue()), StatType.BASE)
-                .build();
-        this.stats = this.stats.add(upgradeStats);
-        recover();
-        ap += AP_PER_LEVEL;
-        sp += SP_PER_LEVEL;
-        notice("LEVEL UP!");
     }
 }

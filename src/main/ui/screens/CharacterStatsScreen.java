@@ -1,6 +1,6 @@
 package main.ui.screens;
 
-import main.agents.Character;
+import main.agents.character.Character;
 
 import static main.ui.UI.*;
 
@@ -14,7 +14,7 @@ public class CharacterStatsScreen {
 
     public void show() throws InterruptedException {
         println(character.name);
-        println("Level: " + character.level);
+        println("Level: " + character.getLevel());
         println("==================");
         println("hp: " + character.getHP() + "/" + character.stats.maxHP.getValue());
         println("mp: " + character.getMP() + "/" + character.stats.maxMP.getValue());

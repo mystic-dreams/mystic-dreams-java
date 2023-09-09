@@ -1,4 +1,4 @@
-package main.agents;
+package main.agents.character;
 
 import main.exceptions.InvalidJobException;
 

@@ -12,7 +12,8 @@ public class Config {
     //  UI
     // ========================================
     public static final int DISPLAY_THROTTLE = 100; // In milliseconds
-    public static final int NOTICE_DISPLAY_DELAY = 2 * DISPLAY_THROTTLE;
+    public static final int NOTICE_DISPLAY_DELAY = 2 * DISPLAY_THROTTLE; // In milliseconds
+    public static final int COMBAT_DISPLAY_DELAY = 1000; // In milliseconds
 
     // ========================================
     //  Gameplay
@@ -22,6 +23,8 @@ public class Config {
 
     public static final int AP_PER_LEVEL = 5;
     public static final int SP_PER_LEVEL = 3;
+
+    public static final int OVERPOWER_LEVEL_THRESHOLD = 20;
 
     public static int getExpRequirement(int level) {
         return (int) Math.pow(level, 2) * 10;

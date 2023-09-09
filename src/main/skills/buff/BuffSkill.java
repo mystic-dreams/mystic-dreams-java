@@ -1,6 +1,6 @@
 package main.skills.buff;
 
-import main.agents.Character;
+import main.agents.Agent;
 import main.skills.ActiveSkill;
 import main.skills.SupportSkill;
 import main.stats.Stats;
@@ -23,15 +23,15 @@ public abstract class BuffSkill extends ActiveSkill implements SupportSkill {
     }
 
     @Override
-    public void apply(Character character) {
+    public void apply(Agent agent) {
         Logger.debug("Using buff skill " + name);
-        character.stats = character.stats.add(effects[level]);
+        agent.stats = agent.stats.add(effects[level]);
 
         TimerTask task = new TimerTask() {
             public void run() {
                 Logger.debug("Timer expired for " + name);
                 Logger.debug("Removing stats");
-                unapply(character);
+                unapply(agent);
             }
         };
         Timer timer = new Timer("Buff");
@@ -39,7 +39,7 @@ public abstract class BuffSkill extends ActiveSkill implements SupportSkill {
     }
 
     @Override
-    public void unapply(Character character) {
-        character.stats = character.stats.remove(effects[level]);
+    public void unapply(Agent agent) {
+        agent.stats = agent.stats.remove(effects[level]);
     }
 }

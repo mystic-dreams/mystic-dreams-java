@@ -1,6 +1,7 @@
 package main.skills.skillbooks;
 
 import main.services.Savable;
+import main.skills.ActiveSkill;
 import main.skills.Skill;
 import main.skills.passive.PassiveSkill;
 import main.ui.Logger;
@@ -10,17 +11,17 @@ import java.util.Map;
 import java.util.Set;
 
 public class SkillBook implements Savable {
-    protected Map<String, Skill> activeSkills = new HashMap<>();
-    protected Map<String, Skill> passiveSkills = new HashMap<>();
+    protected Map<String, ActiveSkill> activeSkills = new HashMap<>();
+    protected Map<String, PassiveSkill> passiveSkills = new HashMap<>();
 
     public SkillBook(Skill... skills) {
         for (Skill skill : skills) {
             if (skill instanceof PassiveSkill) {
                 Logger.debug(skill.name + " added to passive skills");
-                this.passiveSkills.put(skill.name, skill);
+                this.passiveSkills.put(skill.name, (PassiveSkill) skill);
             } else {
                 Logger.debug(skill.name + " added to active skills");
-                this.activeSkills.put(skill.name, skill);
+                this.activeSkills.put(skill.name, (ActiveSkill) skill);
             }
         }
     }
@@ -33,8 +34,12 @@ public class SkillBook implements Savable {
         return skill;
     }
 
-    public Skill[] getPassiveSkills() {
-        return passiveSkills.values().toArray(new Skill[0]);
+    public ActiveSkill[] getActiveSkills() {
+        return activeSkills.values().toArray(new ActiveSkill[0]);
+    }
+
+    public PassiveSkill[] getPassiveSkills() {
+        return passiveSkills.values().toArray(new PassiveSkill[0]);
     }
 
     public String[] listSkills() {

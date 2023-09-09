@@ -10,10 +10,9 @@ import static main.Config.DMG_PER_ATT;
 import static main.Config.STATS_PER_ATT;
 
 public abstract class AttackSkill extends ActiveSkill {
-
+    public final AttackType attackType;
     private final int[] skillDamages;
     private final int numOfHits;
-    private final AttackType attackType;
     private final Random rand = new Random();
 
     protected AttackSkill(String name, int maxLevel, int level, int[] hpConsumption, int[] mpConsumptions,
@@ -25,7 +24,7 @@ public abstract class AttackSkill extends ActiveSkill {
         this.attackType = attackType;
     }
 
-    private long calculateDamage(Stats casterStats) {
+    public long calculateDamage(Stats casterStats) {
         int mainStat = attackType == AttackType.PHYSICAL ? casterStats.str.getValue() : casterStats.wis.getValue();
         int weaponStat = attackType == AttackType.PHYSICAL ? casterStats.wAtt.getValue() : casterStats.mAtt.getValue();
         long totalDmg = 0;

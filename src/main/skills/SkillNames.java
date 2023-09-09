@@ -2,6 +2,11 @@ package main.skills;
 
 public class SkillNames {
     // ========================================
+    //  Common
+    // ========================================
+    public static final String BASIC_ATTACK_NAME = "Basic Attack";
+
+    // ========================================
     //  Warriors
     // ========================================
     public static final String IRON_SKIN_NAME = "Iron Skin";

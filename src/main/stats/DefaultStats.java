@@ -1,8 +1,8 @@
 package main.stats;
 
 public class DefaultStats {
-    private static final int baseWMast = 10;
-    private static final int baseCritDmg = 120;
+    public static final int BASE_WMAST = 10;
+    public static final int BASE_CRIT_DMG = 120;
     public static final Stats WARRIOR_STARTER_STATS = new StatsBuilder()
             .setStr(20, StatType.BASE)
             .setWis(4, StatType.BASE)
@@ -14,10 +14,10 @@ public class DefaultStats {
             .setAcc(20, StatType.BASE)
             .setSpd(20, StatType.BASE)
             .setCritRate(5, StatType.BASE)
-            .setCritDmg(baseCritDmg, StatType.BASE)
+            .setCritDmg(BASE_CRIT_DMG, StatType.BASE)
             .setWAtt(0, StatType.BASE)
             .setMAtt(0, StatType.BASE)
-            .setWMast(baseWMast, StatType.BASE)
+            .setWMast(BASE_WMAST, StatType.BASE)
             .build();
 
     public static final Stats MAGICIAN_STARTER_STATS = new StatsBuilder()
@@ -31,9 +31,9 @@ public class DefaultStats {
             .setAcc(20, StatType.BASE)
             .setSpd(20, StatType.BASE)
             .setCritRate(5, StatType.BASE)
-            .setCritDmg(baseCritDmg, StatType.BASE)
+            .setCritDmg(BASE_CRIT_DMG, StatType.BASE)
             .setWAtt(0, StatType.BASE)
             .setMAtt(0, StatType.BASE)
-            .setWMast(baseWMast, StatType.BASE)
+            .setWMast(BASE_WMAST, StatType.BASE)
             .build();
 }

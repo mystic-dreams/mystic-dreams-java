@@ -1,18 +1,25 @@
 package main.ui.menus;
 
-import main.agents.Character;
+import main.agents.character.Character;
+import main.agents.monsters.Monster;
+import main.agents.monsters.Slime;
 import main.exceptions.CharacterNotFoundException;
 import main.exceptions.DataCorruptedException;
 import main.exceptions.InvalidJobException;
 import main.exceptions.InvalidOptionException;
 import main.services.FileServices;
+import main.skills.ActiveSkill;
+import main.skills.SupportSkill;
+import main.skills.attack.AttackSkill;
 import main.ui.Logger;
 import main.ui.screens.CharacterCreationScreen;
 import main.utility.OptionsBuilder;
 
 import java.io.IOException;
 
+import static main.Config.COMBAT_DISPLAY_DELAY;
 import static main.Messages.INVALID_SELECTION;
+import static main.skills.SkillNames.MANA_BOLT_NAME;
 import static main.ui.UI.*;
 
 public class CharacterSelectionMenu extends Menu {
@@ -65,8 +72,32 @@ public class CharacterSelectionMenu extends Menu {
         } else {
             try {
                 Character character = FileServices.loadCharacter(options[selection - 1]);
-                for (int i = 0; i < 10; i++) {
-                    character.gainExp(100);
+                Monster enemy = new Slime();
+                boolean escape = false;
+                while (!escape) {
+                    AttackSkill manaBolt = (AttackSkill) character.getSkill(MANA_BOLT_NAME);
+                    character.attack(manaBolt, enemy);
+
+                    if (enemy.isDead()) {
+                        println(enemy.name + " is dead.", COMBAT_DISPLAY_DELAY);
+                        character.gainExp(enemy.getExp());
+//                        escape = true;
+                        break;
+                    }
+
+                    ActiveSkill enemySkill = enemy.getSkill();
+                    if (enemySkill instanceof SupportSkill) {
+                        ((SupportSkill) enemySkill).apply(enemy);
+                    } else {
+                        enemy.attack((AttackSkill) enemySkill, character);
+                    }
+
+                    if (character.isDead()) {
+                        println(character.name + " is dead.", COMBAT_DISPLAY_DELAY);
+//                        escape = true;
+                        break;
+                    }
+
                 }
 
             } catch (DataCorruptedException | CharacterNotFoundException | InvalidJobException e) {

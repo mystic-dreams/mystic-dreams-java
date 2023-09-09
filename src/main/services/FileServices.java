@@ -1,8 +1,8 @@
 package main.services;
 
 import main.Config;
-import main.agents.Character;
-import main.agents.JobClass;
+import main.agents.character.Character;
+import main.agents.character.JobClass;
 import main.exceptions.*;
 import main.services.filefilters.CharacterFileFilter;
 import main.skills.Skill;

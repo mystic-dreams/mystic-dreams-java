@@ -1,7 +1,7 @@
 package main.ui.screens;
 
-import main.agents.Character;
-import main.agents.JobClass;
+import main.agents.character.Character;
+import main.agents.character.JobClass;
 import main.exceptions.InvalidOptionException;
 import main.services.FileServices;
 import main.ui.Logger;
