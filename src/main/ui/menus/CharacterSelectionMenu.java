@@ -8,7 +8,6 @@ import main.exceptions.InvalidOptionException;
 import main.services.FileServices;
 import main.ui.Logger;
 import main.ui.screens.CharacterCreationScreen;
-import main.ui.screens.CharacterStatsScreen;
 import main.utility.OptionsBuilder;
 
 import java.io.IOException;
@@ -66,9 +65,14 @@ public class CharacterSelectionMenu extends Menu {
         } else {
             try {
                 Character character = FileServices.loadCharacter(options[selection - 1]);
-                new CharacterStatsScreen(character).show();
+                for (int i = 0; i < 10; i++) {
+                    character.gainExp(100);
+                }
+
             } catch (DataCorruptedException | CharacterNotFoundException | InvalidJobException e) {
                 Logger.error(e.getMessage());
+            } catch (IOException e) {
+                Logger.error("Unable to save character");
             }
         }
     }

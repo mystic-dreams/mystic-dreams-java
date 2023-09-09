@@ -53,22 +53,24 @@ public class Stats implements Savable {
         this.wMast = wMast;
     }
 
+    // Use this for character creation. StatsBuilder is for other use and its values will all go to modifier instead
+    // of base.
     public Stats(int str, int wis, int maxHP, int maxMP, int wDef, int mDef, int avd, int acc, int spd, int critRate,
                  int critDmg, int wAtt, int mAtt, int wMast) {
-        this.str = new Stat(str);
-        this.wis = new Stat(wis);
-        this.maxHP = new Stat(maxHP);
-        this.maxMP = new Stat(maxMP);
-        this.wDef = new Stat(wDef);
-        this.mDef = new Stat(mDef);
-        this.avd = new Stat(avd);
-        this.acc = new Stat(acc);
-        this.spd = new Stat(spd);
-        this.critRate = new Stat(critRate);
-        this.critDmg = new Stat(critDmg);
-        this.wAtt = new Stat(wAtt);
-        this.mAtt = new Stat(mAtt);
-        this.wMast = new Stat(wMast);
+        this.str = new Stat(str, 0, 1);
+        this.wis = new Stat(wis, 0, 1);
+        this.maxHP = new Stat(maxHP, 0, 1);
+        this.maxMP = new Stat(maxMP, 0, 1);
+        this.wDef = new Stat(wDef, 0, 1);
+        this.mDef = new Stat(mDef, 0, 1);
+        this.avd = new Stat(avd, 0, 1);
+        this.acc = new Stat(acc, 0, 1);
+        this.spd = new Stat(spd, 0, 1);
+        this.critRate = new Stat(critRate, 0, 1);
+        this.critDmg = new Stat(critDmg, 0, 1);
+        this.wAtt = new Stat(wAtt, 0, 1);
+        this.mAtt = new Stat(mAtt, 0, 1);
+        this.wMast = new Stat(wMast, 0, 1);
     }
 
     public Stats add(Stats other) {

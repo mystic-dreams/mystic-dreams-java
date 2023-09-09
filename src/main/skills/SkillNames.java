@@ -4,7 +4,7 @@ public class SkillNames {
     // ========================================
     //  Warriors
     // ========================================
-
+    public static final String IRON_SKIN_NAME = "Iron Skin";
 
     // ========================================
     //  Magicians

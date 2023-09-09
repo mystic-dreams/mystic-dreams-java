@@ -1,5 +1,8 @@
-package main.skills.passive;
+package main.skills.passive.magician;
 
+import main.exceptions.LevelExceededException;
+import main.skills.Skill;
+import main.skills.passive.PassiveSkill;
 import main.stats.Stats;
 import main.stats.StatsBuilder;
 
@@ -7,7 +10,6 @@ import static main.skills.SkillNames.MANA_WELL_NAME;
 
 public class ManaWell extends PassiveSkill {
     private static final Stats[] skillEffects = {
-            new StatsBuilder().setMaxMP(0.00f).build(),
             new StatsBuilder().setMaxMP(0.00f).build(),
             new StatsBuilder().setMaxMP(0.01f).build(),
             new StatsBuilder().setMaxMP(0.02f).build(),
@@ -31,11 +33,16 @@ public class ManaWell extends PassiveSkill {
             new StatsBuilder().setMaxMP(0.20f).build(),
     };
 
-    public ManaWell(int level) {
-        super(MANA_WELL_NAME, skillEffects.length - 1, level, skillEffects[level]);
+    public static final int MAX_LEVEL = skillEffects.length - 1;
+
+    private ManaWell(int level) {
+        super(MANA_WELL_NAME, MAX_LEVEL, level, skillEffects);
     }
 
-    public ManaWell() {
-        this(0);
+    public static Skill invoke(int level) throws LevelExceededException {
+        if (level > MAX_LEVEL) {
+            throw new LevelExceededException();
+        }
+        return new ManaWell(level);
     }
 }

@@ -21,8 +21,8 @@ public class StatsBuilder {
         return this;
     }
 
-    public StatsBuilder setStr(int strStat) {
-        this.str = new Stat(strStat);
+    public StatsBuilder setStr(int strStat, StatType type) {
+        this.str = type == StatType.BASE ? new Stat(strStat, 0, 0) : new Stat(0, strStat, 0);
         return this;
     }
 
@@ -36,8 +36,8 @@ public class StatsBuilder {
         return this;
     }
 
-    public StatsBuilder setWis(int wisStat) {
-        this.wis = new Stat(wisStat);
+    public StatsBuilder setWis(int wisStat, StatType type) {
+        this.wis = type == StatType.BASE ? new Stat(wisStat, 0, 0) : new Stat(0, wisStat, 0);
         return this;
     }
 
@@ -51,8 +51,8 @@ public class StatsBuilder {
         return this;
     }
 
-    public StatsBuilder setMaxHP(int maxHPStat) {
-        this.maxHP = new Stat(maxHPStat);
+    public StatsBuilder setMaxHP(int maxHPStat, StatType type) {
+        this.maxHP = type == StatType.BASE ? new Stat(maxHPStat, 0, 0) : new Stat(0, maxHPStat, 0);
         return this;
     }
 
@@ -66,8 +66,8 @@ public class StatsBuilder {
         return this;
     }
 
-    public StatsBuilder setMaxMP(int maxMPStat) {
-        this.maxMP = new Stat(maxMPStat);
+    public StatsBuilder setMaxMP(int maxMPStat, StatType type) {
+        this.maxMP = type == StatType.BASE ? new Stat(maxMPStat, 0, 0) : new Stat(0, maxMPStat, 0);
         return this;
     }
 
@@ -81,8 +81,8 @@ public class StatsBuilder {
         return this;
     }
 
-    public StatsBuilder setWDef(int wDefStat) {
-        this.wDef = new Stat(wDefStat);
+    public StatsBuilder setWDef(int wDefStat, StatType type) {
+        this.wDef = type == StatType.BASE ? new Stat(wDefStat, 0, 0) : new Stat(0, wDefStat, 0);
         return this;
     }
 
@@ -96,8 +96,8 @@ public class StatsBuilder {
         return this;
     }
 
-    public StatsBuilder setMDef(int mDefStat) {
-        this.mDef = new Stat(mDefStat);
+    public StatsBuilder setMDef(int mDefStat, StatType type) {
+        this.mDef = type == StatType.BASE ? new Stat(mDefStat, 0, 0) : new Stat(0, mDefStat, 0);
         return this;
     }
 
@@ -111,8 +111,8 @@ public class StatsBuilder {
         return this;
     }
 
-    public StatsBuilder setAvd(int avdStat) {
-        this.avd = new Stat(avdStat);
+    public StatsBuilder setAvd(int avdStat, StatType type) {
+        this.avd = type == StatType.BASE ? new Stat(avdStat, 0, 0) : new Stat(0, avdStat, 0);
         return this;
     }
 
@@ -126,8 +126,8 @@ public class StatsBuilder {
         return this;
     }
 
-    public StatsBuilder setAcc(int accStat) {
-        this.acc = new Stat(accStat);
+    public StatsBuilder setAcc(int accStat, StatType type) {
+        this.acc = type == StatType.BASE ? new Stat(accStat, 0, 0) : new Stat(0, accStat, 0);
         return this;
     }
 
@@ -141,8 +141,8 @@ public class StatsBuilder {
         return this;
     }
 
-    public StatsBuilder setSpd(int spdStat) {
-        this.spd = new Stat(spdStat);
+    public StatsBuilder setSpd(int spdStat, StatType type) {
+        this.spd = type == StatType.BASE ? new Stat(spdStat, 0, 0) : new Stat(0, spdStat, 0);
         return this;
     }
 
@@ -156,8 +156,8 @@ public class StatsBuilder {
         return this;
     }
 
-    public StatsBuilder setCritRate(int critRateStat) {
-        this.critRate = new Stat(critRateStat);
+    public StatsBuilder setCritRate(int critRateStat, StatType type) {
+        this.critRate = type == StatType.BASE ? new Stat(critRateStat, 0, 0) : new Stat(0, critRateStat, 0);
         return this;
     }
 
@@ -171,8 +171,8 @@ public class StatsBuilder {
         return this;
     }
 
-    public StatsBuilder setCritDmg(int critDmgStat) {
-        this.critDmg = new Stat(critDmgStat);
+    public StatsBuilder setCritDmg(int critDmgStat, StatType type) {
+        this.critDmg = type == StatType.BASE ? new Stat(critDmgStat, 0, 0) : new Stat(0, critDmgStat, 0);
         return this;
     }
 
@@ -186,8 +186,8 @@ public class StatsBuilder {
         return this;
     }
 
-    public StatsBuilder setWAtt(int wAttStat) {
-        this.wAtt = new Stat(wAttStat);
+    public StatsBuilder setWAtt(int wAttStat, StatType type) {
+        this.wAtt = type == StatType.BASE ? new Stat(wAttStat, 0, 0) : new Stat(0, wAttStat, 0);
         return this;
     }
 
@@ -201,8 +201,8 @@ public class StatsBuilder {
         return this;
     }
 
-    public StatsBuilder setMAtt(int mAttStat) {
-        this.mAtt = new Stat(mAttStat);
+    public StatsBuilder setMAtt(int mAttStat, StatType type) {
+        this.mAtt = type == StatType.BASE ? new Stat(mAttStat, 0, 0) : new Stat(0, mAttStat, 0);
         return this;
     }
 
@@ -216,8 +216,8 @@ public class StatsBuilder {
         return this;
     }
 
-    public StatsBuilder setWMast(int wMastStat) {
-        this.wMast = new Stat(wMastStat);
+    public StatsBuilder setWMast(int wMastStat, StatType type) {
+        this.wMast = type == StatType.BASE ? new Stat(wMastStat, 0, 0) : new Stat(0, wMastStat, 0);
         return this;
     }
 

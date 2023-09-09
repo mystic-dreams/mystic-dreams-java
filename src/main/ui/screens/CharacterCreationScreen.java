@@ -61,8 +61,10 @@ public class CharacterCreationScreen {
 
 
         try {
+            Logger.info("Creating character");
             // Save character
             FileServices.writeCharacterToFile(new Character(characterName, jobClass));
+            Logger.info("Character created");
         } catch (IOException e) {
             Logger.error("Unable to save user. Please make sure that the data file is not opened or try again later.");
         }

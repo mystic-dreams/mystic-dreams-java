@@ -1,6 +1,7 @@
-package main.skills.active.attack;
+package main.skills.attack;
 
-import main.skills.active.ActiveSkill;
+import main.skills.ActiveSkill;
+import main.skills.AttackType;
 import main.stats.Stats;
 
 import java.util.Random;
@@ -10,24 +11,25 @@ import static main.Config.STATS_PER_ATT;
 
 public abstract class AttackSkill extends ActiveSkill {
 
-    private int skillDamage;
-    private int numOfHits;
+    private final int[] skillDamages;
+    private final int numOfHits;
     private final AttackType attackType;
     private final Random rand = new Random();
 
-    public AttackSkill(String name, int maxLevel, int level, int hpConsumption, int mpConsumption, int skillDamage,
-                       int numOfHits, AttackType attackType) {
-        super(name, maxLevel, level, hpConsumption, mpConsumption);
-        this.skillDamage = skillDamage;
+    protected AttackSkill(String name, int maxLevel, int level, int[] hpConsumption, int[] mpConsumptions,
+                          int[] skillDamages,
+                          int numOfHits, AttackType attackType) {
+        super(name, maxLevel, level, hpConsumption, mpConsumptions);
+        this.skillDamages = skillDamages;
         this.numOfHits = numOfHits;
         this.attackType = attackType;
     }
 
-    long calculateDamage(Stats casterStats) {
+    private long calculateDamage(Stats casterStats) {
         int mainStat = attackType == AttackType.PHYSICAL ? casterStats.str.getValue() : casterStats.wis.getValue();
         int weaponStat = attackType == AttackType.PHYSICAL ? casterStats.wAtt.getValue() : casterStats.mAtt.getValue();
         long totalDmg = 0;
-        float skillDamageNormalized = this.skillDamage / 100f;
+        float skillDamageNormalized = this.skillDamages[level] / 100f;
         float wMastNormalized = casterStats.wMast.getValue() / 100f;
         float criticalDamageNormalized = casterStats.critDmg.getValue() / 100f;
 

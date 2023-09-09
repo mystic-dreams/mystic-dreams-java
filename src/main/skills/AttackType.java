@@ -1,4 +1,4 @@
-package main.skills.active.attack;
+package main.skills;
 
 public enum AttackType {
     PHYSICAL,

@@ -13,7 +13,7 @@ public class SkillBook implements Savable {
     protected Map<String, Skill> activeSkills = new HashMap<>();
     protected Map<String, Skill> passiveSkills = new HashMap<>();
 
-    public SkillBook(Skill... skills) throws InterruptedException {
+    public SkillBook(Skill... skills) {
         for (Skill skill : skills) {
             if (skill instanceof PassiveSkill) {
                 Logger.debug(skill.name + " added to passive skills");

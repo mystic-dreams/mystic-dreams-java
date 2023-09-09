@@ -1,5 +1,8 @@
-package main.skills.active.support;
+package main.skills.buff.magician;
 
+import main.exceptions.LevelExceededException;
+import main.skills.Skill;
+import main.skills.buff.BuffSkill;
 import main.stats.Stats;
 import main.stats.StatsBuilder;
 
@@ -21,14 +24,19 @@ public class ManaArmor extends BuffSkill {
             new StatsBuilder().setWDef(0.18f).setMDef(0.18f).build(),
             new StatsBuilder().setWDef(0.20f).setMDef(0.20f).build(),
     };
-
     private static final int[] mpConsumptions = {0, 10, 12, 12, 14, 14, 16, 16, 18, 18, 20};
+    private static final int[] durations = {0, 3 * MS_PER_MIN, 3 * MS_PER_MIN, 3 * MS_PER_MIN, 3 * MS_PER_MIN,
+            3 * MS_PER_MIN, 3 * MS_PER_MIN, 3 * MS_PER_MIN, 3 * MS_PER_MIN, 3 * MS_PER_MIN, 3 * MS_PER_MIN};
+    public static final int MAX_LEVEL = effects.length - 1;
 
-    public ManaArmor(int level) {
-        super(MANA_ARMOR_NAME, effects.length - 1, level, 0, mpConsumptions[level], effects[level], 3 * MS_PER_MIN);
+    private ManaArmor(int level) {
+        super(MANA_ARMOR_NAME, MAX_LEVEL, level, null, mpConsumptions, effects, durations);
     }
 
-    public ManaArmor() {
-        this(0);
+    public static Skill invoke(int level) throws LevelExceededException {
+        if (level > MAX_LEVEL) {
+            throw new LevelExceededException();
+        }
+        return new ManaArmor(level);
     }
 }

@@ -1,7 +1,6 @@
 package main.ui.screens;
 
 import main.agents.Character;
-import main.stats.Stats;
 
 import static main.ui.UI.*;
 
@@ -14,30 +13,28 @@ public class CharacterStatsScreen {
     }
 
     public void show() throws InterruptedException {
-        Stats characterStats = character.getStats();
-
         println(character.name);
         println("Level: " + character.level);
         println("==================");
-        println("hp: " + character.getHP() + "/" + characterStats.maxHP.getValue());
-        println("mp: " + character.getMP() + "/" + characterStats.maxMP.getValue());
+        println("hp: " + character.getHP() + "/" + character.stats.maxHP.getValue());
+        println("mp: " + character.getMP() + "/" + character.stats.maxMP.getValue());
         newline();
         println("Stats");
         println("-----");
-        println("Strength: " + characterStats.str.getValue());
-        println("Wisdom: " + characterStats.wis.getValue());
+        println("Strength: " + character.stats.str.getValue());
+        println("Wisdom: " + character.stats.wis.getValue());
         newline();
-        println("W. Def: " + characterStats.wDef.getValue());
-        println("M. Def: " + characterStats.mDef.getValue());
-        println("Avoid: " + characterStats.avd.getValue());
-        println("Acc: " + characterStats.acc.getValue());
-        println("Speed: " + characterStats.spd.getValue());
-        println("Crit Rate: " + characterStats.critRate.getValue() + "%");
-        println("Crit Damage: " + characterStats.critDmg.getValue() + "%");
+        println("W. Def: " + character.stats.wDef.getValue());
+        println("M. Def: " + character.stats.mDef.getValue());
+        println("Avoid: " + character.stats.avd.getValue());
+        println("Acc: " + character.stats.acc.getValue());
+        println("Speed: " + character.stats.spd.getValue());
+        println("Crit Rate: " + character.stats.critRate.getValue() + "%");
+        println("Crit Damage: " + character.stats.critDmg.getValue() + "%");
         newline();
-        println("W. Att: " + characterStats.wAtt.getValue());
-        println("M. Att: " + characterStats.mAtt.getValue());
-        println("W. Mastery: " + characterStats.wMast.getValue() + "%");
+        println("W. Att: " + character.stats.wAtt.getValue());
+        println("M. Att: " + character.stats.mAtt.getValue());
+        println("W. Mastery: " + character.stats.wMast.getValue() + "%");
         newline();
 
         getInput("Press enter to continue...");

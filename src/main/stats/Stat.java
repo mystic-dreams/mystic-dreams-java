@@ -11,10 +11,6 @@ public class Stat {
         this.multiplier = multiplier;
     }
 
-    public Stat(int baseValue) {
-        this(baseValue, 0, 1);
-    }
-
     public int getBaseValue() {
         return baseValue;
     }
@@ -24,12 +20,12 @@ public class Stat {
     }
 
     public Stat add(Stat other) {
-        return new Stat(this.baseValue, this.modifier + other.baseValue + other.modifier,
+        return new Stat(this.baseValue + other.baseValue, this.modifier + other.modifier,
                 this.multiplier + other.multiplier);
     }
 
     public Stat remove(Stat other) {
-        return new Stat(this.baseValue, this.modifier - other.baseValue - other.modifier,
+        return new Stat(this.baseValue, this.modifier - other.modifier,
                 this.multiplier - other.multiplier);
     }
 

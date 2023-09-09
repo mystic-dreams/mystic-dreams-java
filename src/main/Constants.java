@@ -18,6 +18,7 @@ public class Constants {
     public static final String MP_FIELD = "mp";
     public static final String AP_FIELD = "ap";
     public static final String SP_FIELD = "sp";
+    public static final String EXP_FIELD = "exp";
 
     // ========================================
     //  Stats
