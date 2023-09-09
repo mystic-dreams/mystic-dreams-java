@@ -27,13 +27,17 @@ public class CharacterStatsScreen {
         println("Strength: " + characterStats.str.getValue());
         println("Wisdom: " + characterStats.wis.getValue());
         newline();
+        println("W. Def: " + characterStats.wDef.getValue());
+        println("M. Def: " + characterStats.mDef.getValue());
         println("Avoid: " + characterStats.avd.getValue());
         println("Acc: " + characterStats.acc.getValue());
         println("Speed: " + characterStats.spd.getValue());
+        println("Crit Rate: " + characterStats.critRate.getValue() + "%");
+        println("Crit Damage: " + characterStats.critDmg.getValue() + "%");
         newline();
         println("W. Att: " + characterStats.wAtt.getValue());
         println("M. Att: " + characterStats.mAtt.getValue());
-        println("W. Mastery: " + characterStats.wMast.getValue());
+        println("W. Mastery: " + characterStats.wMast.getValue() + "%");
         newline();
 
         getInput("Press enter to continue...");

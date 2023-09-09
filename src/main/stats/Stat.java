@@ -29,7 +29,7 @@ public class Stat {
     }
 
     public Stat remove(Stat other) {
-        return new Stat(this.baseValue - other.baseValue, this.modifier - other.modifier,
+        return new Stat(this.baseValue, this.modifier - other.baseValue - other.modifier,
                 this.multiplier - other.multiplier);
     }
 

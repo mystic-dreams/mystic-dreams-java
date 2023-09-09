@@ -1,15 +1,22 @@
 package main.agents;
 
+import main.services.Savable;
 import main.skills.Skill;
+import main.skills.active.support.BuffSkill;
 import main.skills.passive.PassiveSkill;
 import main.skills.skillbooks.MagicianSkillBook;
 import main.skills.skillbooks.SkillBook;
 import main.stats.Stats;
+import main.ui.Logger;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
+import static main.Constants.*;
 import static main.stats.DefaultStats.MAGICIAN_STARTER_STATS;
 import static main.stats.DefaultStats.WARRIOR_STARTER_STATS;
 
-public class Character {
+public class Character implements Savable {
     public final String name;
     public final int level;
 
@@ -22,7 +29,7 @@ public class Character {
 
     private Stats stats;
 
-    private SkillBook skillBook;
+    public SkillBook skillBook;
 
     public Character(String name, int level, int hp, int mp, Stats stats, JobClass job, int ap, int sp) throws InterruptedException {
         this.name = name;
@@ -48,8 +55,35 @@ public class Character {
 
     public void useSkill(Skill skill) {
         if (skill instanceof PassiveSkill) {
+            Logger.debug("Using passive skill " + skill.name);
             this.stats = this.stats.add(((PassiveSkill) skill).effect);
+        } else if (skill instanceof BuffSkill) {
+            Logger.debug("Using buff skill " + skill.name);
+            this.stats = this.stats.add(((BuffSkill) skill).effect);
+
+            TimerTask task = new TimerTask() {
+                public void run() {
+                    Logger.debug("Timer expired for " + skill.name);
+                    Logger.debug("Removing stats");
+                    stats = stats.remove(((BuffSkill) skill).effect);
+                }
+            };
+            Timer timer = new Timer("Buff");
+            timer.schedule(task, ((BuffSkill) skill).duration);
         }
+    }
+
+    public void recover() {
+        regenerate();
+        rejuvenate();
+    }
+
+    public void regenerate() {
+        this.hp = stats.maxHP.getValue();
+    }
+
+    public void rejuvenate() {
+        this.mp = stats.maxMP.getValue();
     }
 
     public int getHP() {
@@ -67,16 +101,16 @@ public class Character {
     // ========================================
     //  Helper
     // ========================================
-
+    @Override
     public String toFileFormat() {
-        return "name=" + name + "\n" +
-                "level=" + level + "\n" +
-                "job=" + job.value + "\n" +
-                "hp=" + hp + "\n" +
-                "mp=" + mp + "\n" +
+        return NAME_FIELD + "=" + name + "\n" +
+                LEVEL_FIELD + "=" + level + "\n" +
+                JOB_FIELD + "=" + job.value + "\n" +
+                HP_FIELD + "=" + hp + "\n" +
+                MP_FIELD + "=" + mp + "\n" +
                 stats.toFileFormat() +
-                "ap=" + ap + "\n" +
-                "sp=" + sp + "\n";
+                AP_FIELD + "=" + ap + "\n" +
+                SP_FIELD + "=" + sp + "\n";
     }
 
     private static Stats getStarterStats(JobClass job) {

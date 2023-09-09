@@ -1,5 +1,7 @@
 package main.ui.menus;
 
+import main.Constants;
+
 import java.io.IOException;
 
 import static main.ui.UI.println;
@@ -23,6 +25,8 @@ public class MainMenu extends Menu {
     // ========================================
 
     public MainMenu() {
-        super(new Banner("Mystic Dreams"), "Welcome to Mystic Dreams", MenuReturnType.EXIT, "Start", "Setting");
+        super(new Banner(Constants.APPLICATION_NAME), "Welcome to " + Constants.APPLICATION_NAME, MenuReturnType.EXIT
+                , "Start",
+                "Setting");
     }
 }

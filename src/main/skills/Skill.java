@@ -8,6 +8,6 @@ public abstract class Skill {
     public Skill(String name, int maxLevel, int level) {
         this.name = name;
         this.maxLevel = maxLevel;
-        this.level = level;
+        this.level = Math.min(level, maxLevel);
     }
 }

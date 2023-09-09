@@ -11,25 +11,25 @@ public class Logger {
         logLevel = level;
     }
 
-    public static void debug(String message) throws InterruptedException {
+    public static void debug(String message) {
         if (logLevel.ordinal() > LogLevel.DEBUG.ordinal()) {
             return;
         }
         log(LogLevel.DEBUG, message);
     }
 
-    public static void info(String message) throws InterruptedException {
+    public static void info(String message) {
         if (logLevel.ordinal() > LogLevel.INFO.ordinal()) {
             return;
         }
         log(LogLevel.INFO, message);
     }
 
-    public static void error(String message) throws InterruptedException {
+    public static void error(String message) {
         log(LogLevel.ERROR, message);
     }
 
-    private static void log(LogLevel level, String message) throws InterruptedException {
-        UI.println("[" + level + "] " + message);
+    private static void log(LogLevel level, String message) {
+        System.out.println("[" + level + "] " + message);
     }
 }
