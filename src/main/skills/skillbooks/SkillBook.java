@@ -31,11 +31,11 @@ public class SkillBook implements Savable {
         if (skill == null) {
             skill = passiveSkills.get(skillName);
         }
-        return skill;
+        return skill.level > 0 ? skill : null;
     }
 
     public ActiveSkill[] getActiveSkills() {
-        return activeSkills.values().toArray(new ActiveSkill[0]);
+        return activeSkills.values().stream().filter(skill -> skill.level != 0).toList().toArray(new ActiveSkill[0]);
     }
 
     public PassiveSkill[] getPassiveSkills() {

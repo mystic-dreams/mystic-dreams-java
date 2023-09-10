@@ -11,13 +11,15 @@ import java.io.IOException;
 
 import static java.lang.Integer.parseInt;
 import static main.Messages.INVALID_SELECTION;
+import static main.Messages.SELECTION_PROMPT;
 import static main.ui.UI.*;
 
-public class CharacterCreationScreen {
+public class CharacterCreationScreen extends Screen {
 
     private final JobClass[] jobClasses = JobClass.values();
 
-    public void show() throws InterruptedException {
+    @Override
+    public boolean show() throws InterruptedException {
         String characterName;
         JobClass jobClass;
 
@@ -44,7 +46,7 @@ public class CharacterCreationScreen {
                     println((i + 1) + ". " + jobClasses[i].value);
                 }
                 newline();
-                int selection = parseInt(getInput("Selection:"));
+                int selection = parseInt(getInput(SELECTION_PROMPT));
 
                 if (selection < 1 || selection > jobClasses.length) {
                     throw new InvalidOptionException();
@@ -68,5 +70,13 @@ public class CharacterCreationScreen {
         } catch (IOException e) {
             Logger.error("Unable to save user. Please make sure that the data file is not opened or try again later.");
         }
+        return true;
+    }
+
+    // ========================================
+    //  Constructors
+    // ========================================
+    public CharacterCreationScreen() {
+        super(false);
     }
 }

@@ -1,31 +1,28 @@
 package main.ui.menus;
 
 import main.agents.character.Character;
-import main.agents.monsters.Monster;
 import main.agents.monsters.Slime;
 import main.exceptions.CharacterNotFoundException;
 import main.exceptions.DataCorruptedException;
 import main.exceptions.InvalidJobException;
 import main.exceptions.InvalidOptionException;
 import main.services.FileServices;
-import main.skills.ActiveSkill;
-import main.skills.SupportSkill;
-import main.skills.attack.AttackSkill;
 import main.ui.Logger;
 import main.ui.screens.CharacterCreationScreen;
+import main.ui.screens.CombatScreen;
 import main.utility.OptionsBuilder;
 
 import java.io.IOException;
 
-import static main.Config.COMBAT_DISPLAY_DELAY;
 import static main.Messages.INVALID_SELECTION;
-import static main.skills.SkillNames.MANA_BOLT_NAME;
+import static main.Messages.SELECTION_PROMPT;
 import static main.ui.UI.*;
 
 public class CharacterSelectionMenu extends Menu {
     @Override
-    public void show() throws InterruptedException {
-        while (true) {
+    public boolean show() throws InterruptedException {
+        boolean escape = false;
+        while (!escape) {
             if (banner != null) {
                 println(banner.toString());
                 newline();
@@ -38,10 +35,9 @@ public class CharacterSelectionMenu extends Menu {
             try {
                 options = addDefaultOptions(FileServices.getCharacters());
 
-                displayOptions();
-                newline();
+                displayOptions(options);
 
-                int selection = Integer.parseInt(getInput("Selection:"));
+                int selection = Integer.parseInt(getInput(SELECTION_PROMPT));
                 newline();
 
                 if (selection > options.length) {
@@ -49,63 +45,38 @@ public class CharacterSelectionMenu extends Menu {
                 }
 
                 if (selection == options.length) {
-                    return;
+                    // Returns true for breaking out of loop if last option is escape/exit, false if the last option is
+                    // back. Useful for nested menus.
+                    return false;
                 }
 
-                handleSelection(selection);
+                escape = handleSelection(selection);
 
             } catch (IOException e) {
                 Logger.error("Unable to get characters.");
-                return;
             } catch (InvalidOptionException e) {
                 notice(INVALID_SELECTION);
             } finally {
                 newline();
             }
         }
+        return skipPreviousScreen;
     }
 
     @Override
-    protected void handleSelection(int selection) throws InterruptedException {
+    protected boolean handleSelection(int selection) throws InterruptedException {
         if (selection == options.length - 1) {
-            new CharacterCreationScreen().show();
+            return new CharacterCreationScreen().show();
         } else {
             try {
                 Character character = FileServices.loadCharacter(options[selection - 1]);
-                Monster enemy = new Slime();
-                boolean escape = false;
-                while (!escape) {
-                    AttackSkill manaBolt = (AttackSkill) character.getSkill(MANA_BOLT_NAME);
-                    character.attack(manaBolt, enemy);
-
-                    if (enemy.isDead()) {
-                        println(enemy.name + " is dead.", COMBAT_DISPLAY_DELAY);
-                        character.gainExp(enemy.getExp());
-//                        escape = true;
-                        break;
-                    }
-
-                    ActiveSkill enemySkill = enemy.getSkill();
-                    if (enemySkill instanceof SupportSkill) {
-                        ((SupportSkill) enemySkill).apply(enemy);
-                    } else {
-                        enemy.attack((AttackSkill) enemySkill, character);
-                    }
-
-                    if (character.isDead()) {
-                        println(character.name + " is dead.", COMBAT_DISPLAY_DELAY);
-//                        escape = true;
-                        break;
-                    }
-
-                }
-
+                new CombatScreen(character, new Slime()).show();
+                return true;
             } catch (DataCorruptedException | CharacterNotFoundException | InvalidJobException e) {
                 Logger.error(e.getMessage());
-            } catch (IOException e) {
-                Logger.error("Unable to save character");
             }
         }
+        return false;
     }
 
     // ========================================
@@ -124,6 +95,6 @@ public class CharacterSelectionMenu extends Menu {
     //  Constructors
     // ========================================
     public CharacterSelectionMenu() throws IOException {
-        super(null, "Select your character:");
+        super(null, "Select your character:", false);
     }
 }

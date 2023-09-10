@@ -88,7 +88,7 @@ public abstract class Agent {
         println(name + " uses " + skill.name, COMBAT_DISPLAY_DELAY);
 
         int accuracyPoint = rand.nextInt(stats.acc.getValue() + 1);
-        int avoidabilityPoint = rand.nextInt(stats.avd.getValue() + 1);
+        int avoidabilityPoint = rand.nextInt(enemy.stats.avd.getValue() + 1);
 
         if (accuracyPoint < avoidabilityPoint) {
             println("Attack Missed!", COMBAT_DISPLAY_DELAY);
