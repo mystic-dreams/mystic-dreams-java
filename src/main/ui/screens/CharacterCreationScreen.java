@@ -5,33 +5,39 @@ import main.agents.character.JobClass;
 import main.exceptions.InvalidOptionException;
 import main.services.FileServices;
 import main.ui.Logger;
-import main.utility.Validator;
 
 import java.io.IOException;
+import java.util.regex.Pattern;
 
 import static java.lang.Integer.parseInt;
-import static main.Messages.INVALID_SELECTION;
+import static main.Messages.INVALID_SELECTION_MESSAGE;
 import static main.Messages.SELECTION_PROMPT;
 import static main.ui.UI.*;
 
 public class CharacterCreationScreen extends Screen {
 
-    private final JobClass[] jobClasses = JobClass.values();
+    private Character character = null;
 
     @Override
-    public boolean show() throws InterruptedException {
-        String characterName;
-        JobClass jobClass;
+    protected void handleScreenLogic() throws InterruptedException {
+        // Confirm to proceed with character creation
+        if (!confirmToProceed()) {
+            return;
+        }
 
+        // Get character name
+        String characterName;
         while (true) {
-            characterName = getInput("Character name:");
+            characterName = getInput("Character Name:");
             newline();
 
-            if (!Validator.validateName(characterName)) {
+            // Validate name
+            if (!validateName(characterName)) {
                 notice("Invalid name. Name cannot contain symbols, whitespace or exceed 18 characters");
                 continue;
             }
 
+            // Check if character already exists
             if (FileServices.characterExists(characterName)) {
                 notice("Character already exists");
                 continue;
@@ -39,6 +45,9 @@ public class CharacterCreationScreen extends Screen {
             break;
         }
 
+        // Get job class
+        JobClass[] jobClasses = JobClass.values();
+        JobClass jobClass;
         while (true) {
             try {
                 println("Choose your character class:");
@@ -55,26 +64,50 @@ public class CharacterCreationScreen extends Screen {
                 jobClass = jobClasses[selection - 1];
                 break;
             } catch (NumberFormatException | InvalidOptionException e) {
-                notice(INVALID_SELECTION);
+                notice(INVALID_SELECTION_MESSAGE);
             } finally {
                 newline();
             }
         }
 
-
         try {
             Logger.info("Creating character");
             // Save character
-            FileServices.writeCharacterToFile(new Character(characterName, jobClass));
+            character = new Character(characterName, jobClass);
+            FileServices.writeCharacterToFile(character);
             Logger.info("Character created");
         } catch (IOException e) {
             Logger.error("Unable to save user. Please make sure that the data file is not opened or try again later.");
         }
-        return true;
     }
 
     // ========================================
-    //  Constructors
+    //  Helper
+    // ========================================
+    public Character getCharacter() {
+        return character;
+    }
+
+    private boolean confirmToProceed() {
+        String input = getInput("There is no returning once you proceed with the character creation. Do you wish to proceed? (y/N)");
+        String cleanedInput = input.trim().toLowerCase();
+        return cleanedInput.equals("y") || cleanedInput.equals("yes");
+    }
+
+    /*
+        Name Rules:
+        1) Alphanumeric only
+        2) Up to 18 characters
+     */
+    private boolean validateName(String name) {
+        Pattern alphanumeric = Pattern.compile("^[a-zA-Z0-9]{1,18}$");
+
+        return alphanumeric.matcher(name).find();
+
+    }
+
+    // ========================================
+    //  Constructor
     // ========================================
     public CharacterCreationScreen() {
         super(false);

@@ -1,14 +1,18 @@
 package main.ui.screens;
 
 public abstract class Screen {
-    protected final boolean skipPreviousScreen;
+    protected boolean skipPreviousScreen;
 
-    abstract protected void handleScreen() throws InterruptedException;
+    abstract protected void handleScreenLogic() throws InterruptedException;
 
     public boolean show() throws InterruptedException {
-        handleScreen();
+        handleScreenLogic();
         return skipPreviousScreen;
     }
+
+    // ========================================
+    //  Constructor
+    // ========================================
 
     protected Screen(boolean skipPreviousScreen) {
         this.skipPreviousScreen = skipPreviousScreen;

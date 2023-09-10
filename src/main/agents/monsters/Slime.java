@@ -13,7 +13,7 @@ public class Slime extends Monster {
 
     public Slime() {
         super("Slime", maxHP, maxMP, 1, 3, new Stats(
-                0, 0, maxHP, maxMP, 10, 5, 20, 10, 5, 5, BASE_CRIT_DMG, 2, 1, BASE_WMAST
+                0, 0, maxHP, maxMP, 10, 5, 20, 10, 8, 5, BASE_CRIT_DMG, 2, 1, BASE_WMAST
         ), new SkillBook(new BasicAttack()));
     }
 }

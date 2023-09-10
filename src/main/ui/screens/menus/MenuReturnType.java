@@ -1,4 +1,4 @@
-package main.ui.menus;
+package main.ui.screens.menus;
 
 public enum MenuReturnType {
     BACK("Back"),

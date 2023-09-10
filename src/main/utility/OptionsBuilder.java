@@ -1,6 +1,6 @@
 package main.utility;
 
-import main.ui.menus.MenuReturnType;
+import main.ui.screens.menus.MenuReturnType;
 
 import java.util.ArrayList;
 import java.util.Arrays;

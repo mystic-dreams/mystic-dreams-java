@@ -1,4 +1,4 @@
-package main.ui.menus;
+package main.ui.screens.menus;
 
 import java.util.Arrays;
 

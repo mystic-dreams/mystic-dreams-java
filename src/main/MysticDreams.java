@@ -1,7 +1,7 @@
 package main;
 
 import main.ui.Logger;
-import main.ui.menus.MainMenu;
+import main.ui.screens.menus.MainMenu;
 
 import java.io.IOException;
 

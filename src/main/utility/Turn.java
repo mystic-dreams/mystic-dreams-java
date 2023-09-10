@@ -1,4 +1,4 @@
-package main.ui.screens;
+package main.utility;
 
 import main.agents.Agent;
 

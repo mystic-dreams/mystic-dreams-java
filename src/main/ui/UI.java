@@ -11,6 +11,14 @@ public class UI {
         println("[Notice] " + message, Config.NOTICE_DISPLAY_DELAY);
     }
 
+    public static void printDividerLong() throws InterruptedException {
+        println("------------------------------");
+    }
+
+    public static void printDividerShort() throws InterruptedException {
+        println("--------------------");
+    }
+
     public static void println(String message, int delay) throws InterruptedException {
         System.out.println(message);
         Thread.sleep(delay);
