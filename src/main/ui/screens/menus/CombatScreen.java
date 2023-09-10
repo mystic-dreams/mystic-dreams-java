@@ -3,12 +3,15 @@ package main.ui.screens.menus;
 import main.agents.Agent;
 import main.agents.character.Character;
 import main.agents.monsters.Monster;
+import main.services.FileServices;
 import main.skills.ActiveSkill;
 import main.skills.SupportSkill;
 import main.skills.attack.AttackSkill;
+import main.ui.Logger;
 import main.ui.screens.Screen;
 import main.utility.Turn;
 
+import java.io.IOException;
 import java.util.Comparator;
 import java.util.PriorityQueue;
 
@@ -38,6 +41,12 @@ public class CombatScreen extends Screen {
             if (attacker instanceof Character) {
                 escape = new CombatMenu((Character) attacker, (Monster) enemy).show();
                 if (escape) {
+                    try {
+                        FileServices.writeCharacterToFile(character);
+                    } catch (IOException e) {
+                        Logger.error("Unable to save character data");
+                    }
+                    // Skip the rest of the battle
                     continue;
                 }
             } else {
